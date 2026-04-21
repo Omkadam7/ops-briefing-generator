@@ -1,11 +1,9 @@
 import { Briefing } from '@/types/briefing'
-import { 
-  TrendingUp, 
-  AlertTriangle, 
-  Users, 
+import {
+  TrendingUp,
+  AlertTriangle,
+  Users,
   CheckCircle,
-  Building2,
-  Calendar
 } from 'lucide-react'
 
 interface BriefingOutputProps {
@@ -16,76 +14,86 @@ const sections = [
   {
     key: 'keyNumbers' as const,
     icon: TrendingUp,
-    color: 'blue',
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
-    iconColor: 'text-blue-600',
-    titleColor: 'text-blue-800',
+    label: 'KEY NUMBERS',
+    accent: 'border-blue-500/40',
+    iconColor: 'text-blue-400',
+    dotColor: 'bg-blue-400',
+    glow: 'shadow-blue-400/10',
   },
   {
     key: 'alerts' as const,
     icon: AlertTriangle,
-    color: 'amber',
-    bg: 'bg-amber-50',
-    border: 'border-amber-200',
-    iconColor: 'text-amber-600',
-    titleColor: 'text-amber-800',
+    label: 'ALERTS & ISSUES',
+    accent: 'border-amber-500/40',
+    iconColor: 'text-amber-400',
+    dotColor: 'bg-amber-400',
+    glow: 'shadow-amber-400/10',
   },
   {
     key: 'staffing' as const,
     icon: Users,
-    color: 'purple',
-    bg: 'bg-purple-50',
-    border: 'border-purple-200',
-    iconColor: 'text-purple-600',
-    titleColor: 'text-purple-800',
+    label: 'STAFFING',
+    accent: 'border-purple-500/40',
+    iconColor: 'text-purple-400',
+    dotColor: 'bg-purple-400',
+    glow: 'shadow-purple-400/10',
   },
   {
     key: 'recommendedActions' as const,
     icon: CheckCircle,
-    color: 'green',
-    bg: 'bg-green-50',
-    border: 'border-green-200',
-    iconColor: 'text-green-600',
-    titleColor: 'text-green-800',
+    label: 'RECOMMENDED ACTIONS',
+    accent: 'border-emerald-500/40',
+    iconColor: 'text-emerald-400',
+    dotColor: 'bg-emerald-400',
+    glow: 'shadow-emerald-400/10',
   },
 ]
 
 export default function BriefingOutput({ briefing }: BriefingOutputProps) {
   return (
-    <div className="flex flex-col gap-6">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-900 to-blue-700 rounded-xl p-6 text-white">
-        <div className="flex items-center gap-2 mb-1">
-          <Building2 className="w-5 h-5 opacity-80" />
-          <span className="text-blue-200 text-sm font-medium uppercase tracking-wide">
-            Daily Operations Briefing
-          </span>
-        </div>
-        <h1 className="text-2xl font-bold">{briefing.hotelName}</h1>
-        <div className="flex items-center gap-2 mt-2">
-          <Calendar className="w-4 h-4 opacity-70" />
-          <span className="text-blue-200 text-sm">{briefing.date}</span>
+    <div className="flex flex-col gap-5">
+      {/* Briefing header */}
+      <div className="relative overflow-hidden rounded-xl border border-white/5 bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950 p-6">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs text-slate-500 tracking-widest uppercase">
+              Daily Operations Briefing
+            </span>
+          </div>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            {briefing.hotelName}
+          </h1>
+          <p className="text-slate-400 text-sm mt-1">{briefing.date}</p>
         </div>
       </div>
 
       {/* Sections */}
-      {sections.map(({ key, icon: Icon, bg, border, iconColor, titleColor }) => (
+      {sections.map(({ key, icon: Icon, label, accent, iconColor, dotColor, glow }) => (
         <div
           key={key}
-          className={`${bg} ${border} border rounded-xl p-5`}
+          className={`rounded-xl border ${accent} bg-slate-900/50 p-5 shadow-lg ${glow}`}
         >
-          <div className="flex items-center gap-2 mb-3">
-            <Icon className={`w-5 h-5 ${iconColor}`} />
-            <h3 className={`font-semibold ${titleColor}`}>
-              {briefing[key].title}
-            </h3>
+          {/* Section header */}
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
+            <Icon className={`w-4 h-4 ${iconColor}`} />
+            <span className={`text-xs font-semibold ${iconColor} tracking-widest`}>
+              {label}
+            </span>
           </div>
-          <ul className="flex flex-col gap-2">
+
+          {/* Items */}
+          <ul className="flex flex-col gap-2.5">
             {briefing[key].items.map((item, index) => (
-              <li key={index} className="flex items-start gap-2">
-                <span className={`${iconColor} mt-1 text-xs`}>▸</span>
-                <span className="text-gray-700 text-sm leading-relaxed">{item}</span>
+              <li key={index} className="flex items-start gap-3">
+                <span className="text-slate-600 text-xs mt-0.5 font-mono">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="text-slate-300 text-sm leading-relaxed">
+                  {item}
+                </span>
               </li>
             ))}
           </ul>
@@ -93,9 +101,17 @@ export default function BriefingOutput({ briefing }: BriefingOutputProps) {
       ))}
 
       {/* Footer */}
-      <p className="text-xs text-gray-400 text-center pb-2">
-        Generated by Zenith Ops AI · {new Date().toLocaleTimeString('en-AU')}
-      </p>
+      <div className="flex items-center justify-between pt-2 pb-1">
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-1 rounded-full bg-emerald-400" />
+          <span className="text-xs text-slate-600 tracking-wide">
+            GENERATED SUCCESSFULLY
+          </span>
+        </div>
+        <span className="text-xs text-slate-600 font-mono">
+          {new Date().toLocaleTimeString('en-AU')} AEST
+        </span>
+      </div>
     </div>
   )
 }
