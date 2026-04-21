@@ -121,7 +121,6 @@ The API key is stored server-side and never exposed to the browser.
 
 Built to demonstrate how AI can eliminate manual reporting work in hospitality operations — turning raw system exports into executive-ready briefings in seconds.
 
----
 
-*Designed for multi-venue hospitality groups across NSW, Australia.*
-## Project Structure
+
+
